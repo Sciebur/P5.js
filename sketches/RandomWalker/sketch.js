@@ -1,3 +1,6 @@
+const positionIncrement = 3;
+const colorIncrement = 8;
+
 let canvas_size;
 
 let x;
@@ -5,16 +8,12 @@ let y;
 let r;
 let g;
 let b;
-let dPos;
-let dColor;
 let rot;
 
 function setup() {
     canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
     createCanvas(canvas_size, canvas_size);
 
-    dPos = 3;
-    dColor = 8;
     frameRate(1000);
     background(0);
 
@@ -27,12 +26,12 @@ function setup() {
 }
 
 function draw() {
-    x = x + random(-dPos, dPos);
-    y = y + random(-dPos, dPos);
+    x = x + random(-positionIncrement, positionIncrement);
+    y = y + random(-positionIncrement, positionIncrement);
 
-    r = r + random(-dColor, dColor);
-    g = g + random(-dColor, dColor);
-    b = b + random(-dColor, dColor);
+    r = r + random(-colorIncrement, colorIncrement);
+    g = g + random(-colorIncrement, colorIncrement);
+    b = b + random(-colorIncrement, colorIncrement);
 
     rot += 0.0001;
 
