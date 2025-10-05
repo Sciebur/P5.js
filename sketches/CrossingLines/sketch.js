@@ -1,7 +1,7 @@
 let lineWidth = 14;
 let lineSpacing = 25;
 let slidingFrames = 100;
-let rotationFrames = 1000;
+let rotationFrames = 3000;
 
 let lineLength;
 let count;
