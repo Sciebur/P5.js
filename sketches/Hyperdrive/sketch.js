@@ -6,6 +6,9 @@ let canvas_size;
 let stars = [];
 let farthestPoint;
 
+let acceleration;
+let growth;
+
 function setup() {
     canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
     createCanvas(canvas_size, canvas_size);
@@ -21,8 +24,13 @@ function setup() {
 
 function draw() {
     background(0);
+
     push();
     translate(width / 2, height / 2);
+
+    acceleration = map(mouseY, 0, height, 1.2, 1.0);
+    growth = map(mouseY, 0, height, 1.0, 0.5);
+
     for (let star of stars) {
         star.show();
         star.move();
@@ -34,46 +42,35 @@ function draw() {
 class Star {
     constructor() {
         this.radius = random(minimal_radius, maximal_radius);
-        this.fi = random(TWO_PI);
-        this.r = random(Math.sqrt(2) * width / 2);
-        this.fiPrev = this.fi;
-        this.rPrev = this.r;
-        this.repositioned = true;
+        this.position = p5.Vector.random2D();
+        this.position.setMag(random(farthestPoint));
+        this.previousPosition = this.position.copy();
         this.color = color(255, 255, 255, random(0, 50));
-        this.accel = 1.05;
-        this.growth = 1.05;
     }
 
     show() {
         noStroke();
         fill(this.color);
-        circle(this.r * cos(this.fi), this.r * sin(this.fi), this.radius);
-        if (!this.repositioned) {
-            stroke(this.color);
-            strokeWeight(3);
-            line(
-                this.r * cos(this.fi), this.r * sin(this.fi),
-                this.rPrev * cos(this.fiPrev), this.rPrev * sin(this.fiPrev)
-            );
-        }
+        stroke(this.color);
+        strokeWeight(3);
+
+        circle(this.position.x, this.position.y, this.radius);
+        line(this.previousPosition.x, this.previousPosition.y,
+            this.position.x, this.position.y);
     }
 
     move() {
-        this.repositioned = false;
-        this.fiPrev = this.fi;
-        this.rPrev = this.r;
-        this.accel = map(mouseY, 0, height, 1.2, 1.0);
-        this.growth = map(mouseY, 0, height, 1.0, 0.5);
-        this.r *= this.accel;
-        this.radius *= this.growth * this.r / 1000;
+        this.previousPosition = this.position.copy();
+        this.position.setMag(this.position.mag() * acceleration);
+        this.radius *= growth * (this.position.mag() / farthestPoint);
 
-        if (this.r > farthestPoint) {
-            this.r = random(farthestPoint);
-            this.radius = random(3, 6);
+        if (this.position.mag() > farthestPoint) {
+            this.position.setMag(random(farthestPoint));
+            this.radius = random(minimal_radius, maximal_radius);
             this.color.setAlpha(0);
-            this.repositioned = true;
         }
         else {
+            // print(this.radius);
             this.color.setAlpha(this.color._getAlpha() + 5);
         }
     }
