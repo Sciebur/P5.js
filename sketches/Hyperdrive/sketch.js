@@ -29,21 +29,20 @@ class Star {
         this.radius = random(3, 6);
         this.fi = random(TWO_PI);
         this.r = random(Math.sqrt(2) * width / 2);
-        this.opaque = random(0, 50);
         this.fiPrev = this.fi;
         this.rPrev = this.r;
         this.repositioned = true;
-        this.m_color = color(255, 255, 255);
+        this.color = color(255, 255, 255, random(0, 50));
         this.accel = 1.05;
         this.growth = 1.05;
     }
 
     show() {
         noStroke();
-        fill(this.m_color.levels[0], this.m_color.levels[1], this.m_color.levels[2], this.opaque);
+        fill(this.color);
         circle(this.r * cos(this.fi), this.r * sin(this.fi), this.radius);
         if (!this.repositioned) {
-            stroke(this.m_color.levels[0], this.m_color.levels[1], this.m_color.levels[2], this.opaque);
+            stroke(this.color);
             strokeWeight(3);
             line(
                 this.r * cos(this.fi), this.r * sin(this.fi),
@@ -63,12 +62,10 @@ class Star {
         if (this.r > Math.sqrt(2) * width / 2) {
             this.r = random(Math.sqrt(2) * width / 2);
             this.radius = random(3, 6);
-            this.opaque = 0;
+            this.color.setAlpha(0);
             this.repositioned = true;
         }
-        if (this.opaque < 255) {
-            this.opaque += map(this.r, 0, Math.sqrt(2) * width / 2, 0, 20);
-        }
+        this.color.setAlpha(this.color._getAlpha() + 5);
     }
 
 }
