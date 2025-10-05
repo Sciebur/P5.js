@@ -1,3 +1,7 @@
+const minimal_radius = 3;
+const maximal_radius = 6;
+const star_count = 500;
+
 let canvas_size;
 let stars = [];
 let farthestPoint;
@@ -10,7 +14,7 @@ function setup() {
 
     farthestPoint = Math.sqrt(2) * canvas_size / 2;
 
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < star_count; i++) {
         stars[i] = new Star();
     }
 }
@@ -29,7 +33,7 @@ function draw() {
 // Star class below
 class Star {
     constructor() {
-        this.radius = random(3, 6);
+        this.radius = random(minimal_radius, maximal_radius);
         this.fi = random(TWO_PI);
         this.r = random(Math.sqrt(2) * width / 2);
         this.fiPrev = this.fi;
@@ -62,13 +66,16 @@ class Star {
         this.growth = map(mouseY, 0, height, 1.0, 0.5);
         this.r *= this.accel;
         this.radius *= this.growth * this.r / 1000;
+
         if (this.r > farthestPoint) {
             this.r = random(farthestPoint);
             this.radius = random(3, 6);
             this.color.setAlpha(0);
             this.repositioned = true;
         }
-        this.color.setAlpha(this.color._getAlpha() + 5);
+        else {
+            this.color.setAlpha(this.color._getAlpha() + 5);
+        }
     }
 
 }
