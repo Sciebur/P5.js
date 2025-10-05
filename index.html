@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My p5.js Sketches</title>
+    <title>My p5.js Gallery</title>
     <style>
       body { font-family: sans-serif; text-align: center; background: #111; color: #eee; }
       h1 { margin-top: 40px; }
@@ -11,13 +11,22 @@
       a { color: #66f; text-decoration: none; font-size: 1.2em; }
       a:hover { text-decoration: underline; }
     </style>
+    <script src="sketches.js"></script>
   </head>
   <body>
     <h1>My p5.js Sketches</h1>
-    <ul>
-      <li><a href="sketches/CrossingLines/">Crossing lines</a></li>
-      <!-- <li><a href="sketches/sketch2/">Sketch 2</a></li> -->
-      <!-- <li><a href="sketches/sketch3/">Sketch 3</a></li> -->
-    </ul>
+    <ul id="gallery"></ul>
+
+    <script>
+      const gallery = document.getElementById("gallery");
+      sketches.forEach(sketch => {
+        const li = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = sketch.path;
+        link.textContent = sketch.name;
+        li.appendChild(link);
+        gallery.appendChild(li);
+      });
+    </script>
   </body>
 </html>
