@@ -1,7 +1,9 @@
+let canvas_size;
 let stars = [];
 
 function setup() {
-    createCanvas(500, 500);
+    canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
+    createCanvas(canvas_size, canvas_size);
     background(0);
     frameRate(120);
 
