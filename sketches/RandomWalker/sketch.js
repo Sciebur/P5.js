@@ -10,6 +10,14 @@ let r = 0;
 let g = 0;
 let b = 0;
 
+function setup() {
+    canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
+    createCanvas(canvas_size, canvas_size);
+
+    frameRate(1000);
+    background(0);
+}
+
 function moveWalker() {
     x = x + random(-positionIncrement, positionIncrement);
     y = y + random(-positionIncrement, positionIncrement);
@@ -24,26 +32,22 @@ function changeColor() {
     r = constrain(r, 0, 255);
     g = constrain(g, 0, 255);
     b = constrain(b, 0, 255);
+
+    stroke(r, g, b);
 }
 
-function setup() {
-    canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
-    createCanvas(canvas_size, canvas_size);
-
-    frameRate(1000);
-    background(0);
-}
-
-function draw() {
-    moveWalker();
-    changeColor();
-
+function drawWalker() {
     push();
     translate(width / 2, height / 2);
-    stroke(r, g, b);
     point(x, y);
     point(x, -y);
     point(-x, y);
     point(-x, -y);
     pop();
+}
+
+function draw() {
+    moveWalker();
+    changeColor();
+    drawWalker();
 }
