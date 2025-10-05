@@ -1,3 +1,5 @@
+let canvas_size;
+
 let x;
 let y;
 let r;
@@ -8,7 +10,9 @@ let dColor;
 let rot;
 
 function setup() {
-    createCanvas(500, 500);
+    canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
+    createCanvas(canvas_size, canvas_size);
+
     dPos = 3;
     dColor = 8;
     frameRate(1000);
