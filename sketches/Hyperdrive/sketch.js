@@ -9,6 +9,7 @@ let farthestPoint;
 let acceleration;
 let growth;
 
+
 function setup() {
     canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
     createCanvas(canvas_size, canvas_size);
@@ -29,50 +30,65 @@ function draw() {
     translate(width / 2, height / 2);
 
     acceleration = map(mouseY, 0, height, 1.2, 1.0);
-    growth = map(mouseY, 0, height, 1.0, 0.5);
+    growth = map(mouseY, 0, height, 0.01, 0.005);
 
     for (let star of stars) {
-        star.show();
         star.move();
+        star.show();
     }
+
+    stars[0].debug();
     pop();
 }
 
 // Star class below
 class Star {
     constructor() {
-        this.radius = random(minimal_radius, maximal_radius);
+        this.reset();
+    }
+
+    reset() {
         this.position = p5.Vector.random2D();
         this.position.setMag(random(farthestPoint));
         this.previousPosition = this.position.copy();
-        this.color = color(255, 255, 255, random(0, 50));
+        this.radius = random(minimal_radius, maximal_radius);
+        this.transparency = 0;
     }
 
     show() {
-        noStroke();
-        fill(this.color);
-        stroke(this.color);
-        strokeWeight(3);
+        let newRadius = this.radius + growth * this.position.mag();
+        let newColor = color(255, 255, 255, this.transparency)
 
-        circle(this.position.x, this.position.y, this.radius);
-        line(this.previousPosition.x, this.previousPosition.y,
-            this.position.x, this.position.y);
+        noStroke();
+        fill(newColor);
+        circle(this.position.x, this.position.y, newRadius);
+
+        stroke(newColor);
+        strokeWeight(newRadius * 2);
+        // line(this.previousPosition.x, this.previousPosition.y, this.position.x, this.position.y);
     }
 
     move() {
         this.previousPosition = this.position.copy();
         this.position.setMag(this.position.mag() * acceleration);
-        this.radius *= growth * (this.position.mag() / farthestPoint);
+        this.transparency += map(this.position.mag(), 0, farthestPoint, 0, 20);
 
         if (this.position.mag() > farthestPoint) {
-            this.position.setMag(random(farthestPoint));
-            this.radius = random(minimal_radius, maximal_radius);
-            this.color.setAlpha(0);
-        }
-        else {
-            // print(this.radius);
-            this.color.setAlpha(this.color._getAlpha() + 5);
+            this.reset();
         }
     }
 
+    debug() {
+        if (frameCount % 12 == 0) {
+            print("\n");
+            print("radius", this.radius);
+            print("magnitude", this.position.mag());
+            print("farthestPoint", farthestPoint);
+            print("acceleration", acceleration);
+            print("growth", growth);
+            print("transparency", this.transparency);
+            print("mouseX", mouseX);
+            print("mouseY", mouseY);
+        }
+    }
 }
