@@ -1,5 +1,5 @@
-const positionIncrement = 3;
-const colorIncrement = 8;
+const positionIncrement = 4;
+const colorIncrement = 10;
 
 let canvas_size;
 
