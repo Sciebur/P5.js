@@ -10,6 +10,10 @@ let g;
 let b;
 let rot;
 
+function limit(val, min, max) {
+    return Math.max(min, Math.min(max, val));
+}
+
 function setup() {
     canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
     createCanvas(canvas_size, canvas_size);
@@ -35,20 +39,12 @@ function draw() {
 
     rot += 0.0001;
 
-    if (x < -width / 2) x = -width / 2;
-    else if (x > width / 2) x = width / 2;
 
-    if (y < -height / 2) y = -height / 2;
-    else if (y > height / 2) y = height / 2;
-
-    if (r < 0) r = 0;
-    else if (r > 255) r = 255;
-
-    if (g < 0) g = 0;
-    else if (g > 255) g = 255;
-
-    if (b < 0) b = 0;
-    else if (b > 255) b = 255;
+    x = limit(x, -width / 2, width / 2);
+    y = limit(y, -height / 2, height / 2);
+    r = limit(r, 0, 255);
+    g = limit(g, 0, 255);
+    b = limit(b, 0, 255);
 
     push();
     translate(width / 2, height / 2);
