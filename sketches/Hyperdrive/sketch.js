@@ -1,11 +1,14 @@
 let canvas_size;
 let stars = [];
+let farthestPoint;
 
 function setup() {
     canvas_size = int(new URLSearchParams(window.location.search).get("size")) || 800;
     createCanvas(canvas_size, canvas_size);
     background(0);
     frameRate(120);
+
+    farthestPoint = Math.sqrt(2) * canvas_size / 2;
 
     for (let i = 0; i < 500; i++) {
         stars[i] = new Star();
@@ -52,15 +55,15 @@ class Star {
     }
 
     move() {
+        this.repositioned = false;
         this.fiPrev = this.fi;
         this.rPrev = this.r;
         this.accel = map(mouseY, 0, height, 1.2, 1.0);
         this.growth = map(mouseY, 0, height, 1.0, 0.5);
         this.r *= this.accel;
         this.radius *= this.growth * this.r / 1000;
-        if (this.repositioned) this.repositioned = false;
-        if (this.r > Math.sqrt(2) * width / 2) {
-            this.r = random(Math.sqrt(2) * width / 2);
+        if (this.r > farthestPoint) {
+            this.r = random(farthestPoint);
             this.radius = random(3, 6);
             this.color.setAlpha(0);
             this.repositioned = true;
