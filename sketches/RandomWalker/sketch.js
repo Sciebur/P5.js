@@ -5,10 +5,10 @@ let canvas_size;
 
 let x;
 let y;
+
 let r;
 let g;
 let b;
-let rot;
 
 function limit(val, min, max) {
     return Math.max(min, Math.min(max, val));
@@ -37,9 +37,6 @@ function draw() {
     g = g + random(-colorIncrement, colorIncrement);
     b = b + random(-colorIncrement, colorIncrement);
 
-    rot += 0.0001;
-
-
     x = limit(x, -width / 2, width / 2);
     y = limit(y, -height / 2, height / 2);
     r = limit(r, 0, 255);
@@ -48,7 +45,6 @@ function draw() {
 
     push();
     translate(width / 2, height / 2);
-    //rotate(rot);
     stroke(r, g, b);
     point(x, y);
     point(x, -y);
