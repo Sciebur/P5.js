@@ -23,30 +23,6 @@ function draw() {
     pop();
 }
 
-function keyPressed() {
-    let c;
-    switch (key) {
-        case 'r':
-            c = color(255, 0, 0);
-            break;
-        case 'g':
-            c = color(0, 255, 0);
-            break;
-        case 'b':
-            c = color(0, 0, 255);
-            break;
-        case 'l':
-            c = color(random(255), random(255), random(255));
-            break;
-        default:
-            c = color(120, 120, 120);
-            break;
-    }
-    for (let star of stars) {
-        star.changeColor(c);
-    }
-}
-
 // Star class below
 class Star {
     constructor() {
@@ -95,7 +71,4 @@ class Star {
         }
     }
 
-    changeColor(c) {
-        this.m_color = c;
-    }
 }
