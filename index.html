@@ -52,7 +52,7 @@
         card.className = "card";
 
         const iframe = document.createElement("iframe");
-        iframe.src = sketch.path;   // loads sketch in miniature
+        iframe.src = sketch.path + "?size=300";
         iframe.loading = "lazy";
 
         const link = document.createElement("a");

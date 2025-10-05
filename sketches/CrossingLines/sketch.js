@@ -7,11 +7,12 @@ let lineLength;
 let count;
 
 function setup() {
-  createCanvas(800, 800);
+  let CANVAS_SIZE = int(new URLSearchParams(window.location.search).get("size")) || 800;
+  createCanvas(CANVAS_SIZE, CANVAS_SIZE);
   frameRate(50);
   background(0);
   colorMode(RGB);
-  
+
   count = floor(height / lineWidth);
   lineLength = height / 3;
 }
@@ -30,7 +31,7 @@ function draw() {
   for (let i = -count / 2; i < count / 2; i++) {
     let shift = map(i, 0, count, -PI, PI);
     let rotation = sin(phase + shift) * (width / 2 - lineLength / 2) - lineLength / 2;
-    
+
     line(rotation, i * lineSpacing, rotation + lineLength, i * lineSpacing);
     line(i * lineSpacing, rotation, i * lineSpacing, rotation + lineLength);
   }
